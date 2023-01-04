@@ -41,9 +41,11 @@ function App() {
 
 
   const cards = id.map((d, i) => {
-    const hire = d.title.toLowerCase();
-    const index = hire.indexOf('hiring')
-
+    const hire = 
+    // d.title.toLowerCase();
+    d.title.split(" ")
+    const index = hire.indexOf('is')
+console.log(index)
     return (<Card
       name={d.by}
       title={hire[index]}
