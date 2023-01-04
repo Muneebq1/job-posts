@@ -2,30 +2,56 @@ import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Card from './component/card';
-
+const Get_ids = `https://hacker-news.firebaseio.com/v0/jobstories.json`
+const Get_data = `https://hacker-news.firebaseio.com/v0/item/`
 
 function App() {
 
   const [id, setId] = useState([])
 
   useEffect(() => {
-    axios.get(`https://hacker-news.firebaseio.com/v0/jobstories.json`)
+    axios.get(Get_ids)
       .then(response => {
         // console.log(response.data)
-        setId(response.data)
+        GetData(response.data)
       })
       .catch(err => {
         console.log("error", err)
       })
   }, [])
 
+  const GetData = (idsArray) => {
+    const promises = []
+    for (let i = 0; i < idsArray.length; i++) {
+      const ids = idsArray[i];
+      promises.push(axios.get(`${Get_data}${ids}.json`))
+    }
+    Promise.all(promises).then(
+      (response) => {
 
-  let cards;
-  cards = id.map((d, i) => {
-    
-    return (<Card />)
+        const jobs = response.map((d, i) => {
+          return d.data
+        })
+        // console.log(jobs)
+        setId(jobs)
+        // return jobs
+      })
+  }
+  // console.log(id)
+
+
+  const cards = id.map((d, i) => {
+    const hire = d.title.toLowerCase();
+    const index = hire.indexOf('hiring')
+
+    return (<Card
+      name={d.by}
+      title={hire[index]}
+    // title ={d.title}
+    />)
 
   })
+
 
   const load = () => {
 

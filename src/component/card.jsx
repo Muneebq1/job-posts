@@ -1,9 +1,9 @@
 import "./app.css";
-function card() {
+function card(props) {
   return (
     <div className="card">
-      <h1>Name</h1>
-      <p>message</p>
+      <h1>{props.name}</h1>
+      <p>{props.title}</p>
     </div>
     
   )
