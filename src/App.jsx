@@ -8,10 +8,7 @@ let jobs = [];
 function App() {
 
   const [id, setId] = useState([])
-  // const [id2, setId2] = useState([])
-
   const [count, setCount] = useState(9)
-
 
   useEffect(() => {
     axios.get(Get_ids)
@@ -38,21 +35,23 @@ function App() {
         loadMore()
       })
   }
-console.log(jobs)
 
   const loadMore = () => {
     setCount(count + 6)
-    const arr = jobs.slice(0,count)
-    console.log(">>>>>>> arr", arr)
-    setId(arr)
+    setId(jobs.slice(0, count))
   }
-
-  useEffect(()=>{
-    console.log(id)
-  }, [id])
+  console.log(id)
 
 
   const cards = id.map((d, i) => {
+
+    const onclick = () => {
+      if (d.url) {
+        window.open(d.url)
+      } else {
+        window.open(`https://news.ycombinator.com/item?id=${d.id}`)
+      }
+    }
     const lowercaseDescription = d.title.toLowerCase();
     let name = "";
     let description = "";
@@ -74,16 +73,21 @@ console.log(jobs)
     return (<Card
       name={name}
       title={description}
+      time={d.time}
+      onclick={onclick}
     />)
 
   })
 
-  return <div onClick={loadMore}>
-    <h1 className='heading'>HN Jobs</h1>
-    <span className='flex'>{cards}</span>
-    <button type="submit">load more</button>
-  </div>
+  return (
 
+    <div >
+      <h1 className='heading'>HN Jobs</h1>
+      <span className='flex'>{cards}</span>
+      <button type="button" onClick={loadMore}>load more</button>
+    </div>
+
+  )
 
 }
 
