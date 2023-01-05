@@ -5,8 +5,8 @@ import Card from './component/card';
 const Get_ids = `https://hacker-news.firebaseio.com/v0/jobstories.json`
 const Get_data = `https://hacker-news.firebaseio.com/v0/item/`
 let jobs = [];
-function App() {
 
+function App() {
   const [id, setId] = useState([])
   const [count, setCount] = useState(9)
 
@@ -40,8 +40,6 @@ function App() {
     setCount(count + 6)
     setId(jobs.slice(0, count))
   }
-  console.log(id)
-
 
   const cards = id.map((d, i) => {
 
@@ -70,20 +68,62 @@ function App() {
       description = lowercaseDescription.substr(subStrIndex + 1)
     }
 
-    return (<Card
-      name={name}
-      title={description}
-      time={d.time}
-      onclick={onclick}
-    />)
+    const getCols = (d, i) => {
+      if (((i + 1) % 3) === 1) {
+
+        return (
+          <div onClick={onclick}>
+            <h2>{name}</h2>
+            <div>{description}</div> 
+            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
+          </div>
+        )
+      } else if (((i + 1) % 3) === 2) {
+       
+        return (
+          <div onClick={onclick}>
+            <h2>{name}</h2>
+            <div>{description}</div>
+            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
+          </div>
+        )
+      } else if (((i + 1) % 3) === 0) {
+
+        return (
+          <div onClick={onclick}>
+            <h2>{name}</h2>
+            <div>{description}</div>
+            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
+          </div>
+        );
+      }
+    }
+
+
+    return (
+      <div className="cards">
+        {getCols(d, i)}
+      </div>)
+
+
+    //   <Card
+    //   name={name}
+    //   title={description}
+    //   time={d.time}
+    //   onclick={onclick}
+
 
   })
 
+
+
   return (
 
-    <div >
+    <div className='div-container'>
       <h1 className='heading'>HN Jobs</h1>
-      <span className='flex'>{cards}</span>
+      <span onClick={onclick}>{cards}</span>
+      <div className='row'>
+      </div>
       <button type="button" onClick={loadMore}>load more</button>
     </div>
 
