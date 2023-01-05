@@ -40,7 +40,7 @@ function App() {
   }
 
   const cards = jobCards.map((d, i) => {
-    const onclick = () => {
+    const getMoreInfo = () => {
       if (d.url) {
         window.open(d.url)
       } else {
@@ -67,14 +67,12 @@ function App() {
 
     const getCols = (d, i) => {
       if (((i + 1) % 3) === 1) {
-
         return (
           <Card
             name={name}
             description={description}
             time={d.time}
-            onclick={onclick}
-          />
+            onclick={getMoreInfo} />
         )
       } else if (((i + 1) % 3) === 2) {
 
@@ -83,7 +81,7 @@ function App() {
             name={name}
             description={description}
             time={d.time}
-            onclick={onclick}
+            onclick={getMoreInfo}
           />
         )
       } else if (((i + 1) % 3) === 0) {
@@ -93,12 +91,11 @@ function App() {
             name={name}
             description={description}
             time={d.time}
-            onclick={onclick}
+            onclick={getMoreInfo}
           />
         );
       }
     }
-
     return (
       <div className="cards">
         {getCols(d, i)}
@@ -107,7 +104,7 @@ function App() {
   return (
     <div className='div-container'>
       <h1 className='heading'>HN Jobs</h1>
-      <span onClick={onclick}>{cards}</span>
+      <span >{cards}</span>
       <div className='row'>
       </div>
       <button type="button" onClick={loadMore}>load more</button>
