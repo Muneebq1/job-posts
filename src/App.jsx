@@ -1,53 +1,51 @@
 import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Card from './component/card';
-const Get_ids = `https://hacker-news.firebaseio.com/v0/jobstories.json`
-const Get_data = `https://hacker-news.firebaseio.com/v0/item/`
+import { GET_JOB_IDS_URL, GET_JOB_URL,GET_MORE_DATA } from './utils/constants';
+import Card from './component/Card';
 let jobs = [];
 
 function App() {
-  const [id, setId] = useState([])
+  const [jobCards, setJobCards] = useState([])
   const [count, setCount] = useState(9)
 
   useEffect(() => {
-    axios.get(Get_ids)
+    axios.get(GET_JOB_IDS_URL)
       .then(response => {
-        GetData(response.data)
+        getJobIds(response.data)
       })
       .catch(err => {
         console.log("error", err)
       })
   }, [])
 
-  const GetData = (idsArray) => {
+  const getJobIds = (idsArray) => {
     const promises = []
     for (let i = 0; i < idsArray.length; i++) {
       const ids = idsArray[i];
-      promises.push(axios.get(`${Get_data}${ids}.json`))
+      promises.push(axios.get(`${GET_JOB_URL}${ids}.json`))
     }
     Promise.all(promises).then(
       (response) => {
         jobs = response.map((d, i) => {
           return d.data
         })
-        // setId(jobs.slice(0, count))
         loadMore()
       })
   }
 
   const loadMore = () => {
     setCount(count + 6)
-    setId(jobs.slice(0, count))
+    setJobCards(jobs.slice(0, count))
   }
 
-  const cards = id.map((d, i) => {
+  const cards = jobCards.map((d, i) => {
 
     const onclick = () => {
       if (d.url) {
         window.open(d.url)
       } else {
-        window.open(`https://news.ycombinator.com/item?id=${d.id}`)
+        window.open(`${GET_MORE_DATA}${d.id}`)
       }
     }
     const lowercaseDescription = d.title.toLowerCase();
@@ -72,29 +70,32 @@ function App() {
       if (((i + 1) % 3) === 1) {
 
         return (
-          <div onClick={onclick}>
-            <h2>{name}</h2>
-            <div>{description}</div> 
-            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
-          </div>
+          <Card
+            name={name}
+            description={description}
+            time={d.time}
+            onclick={onclick}
+          />
         )
       } else if (((i + 1) % 3) === 2) {
-       
+
         return (
-          <div onClick={onclick}>
-            <h2>{name}</h2>
-            <div>{description}</div>
-            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
-          </div>
+          <Card
+            name={name}
+            description={description}
+            time={d.time}
+            onclick={onclick}
+          />
         )
       } else if (((i + 1) % 3) === 0) {
 
         return (
-          <div onClick={onclick}>
-            <h2>{name}</h2>
-            <div>{description}</div>
-            <div className='time'>{new Date(d.time).toLocaleDateString()}</div>
-          </div>
+          <Card
+            name={name}
+            description={description}
+            time={d.time}
+            onclick={onclick}
+          />
         );
       }
     }
