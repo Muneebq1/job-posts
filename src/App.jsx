@@ -1,7 +1,7 @@
 import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { GET_JOB_IDS_URL, GET_JOB_URL,GET_MORE_DATA } from './utils/constants';
+import { GET_JOB_IDS_URL, GET_JOB_URL, GET_MORE_DATA } from './utils/constants';
 import Card from './component/Card';
 let jobs = [];
 
@@ -40,7 +40,6 @@ function App() {
   }
 
   const cards = jobCards.map((d, i) => {
-
     const onclick = () => {
       if (d.url) {
         window.open(d.url)
@@ -100,26 +99,12 @@ function App() {
       }
     }
 
-
     return (
       <div className="cards">
         {getCols(d, i)}
       </div>)
-
-
-    //   <Card
-    //   name={name}
-    //   title={description}
-    //   time={d.time}
-    //   onclick={onclick}
-
-
   })
-
-
-
   return (
-
     <div className='div-container'>
       <h1 className='heading'>HN Jobs</h1>
       <span onClick={onclick}>{cards}</span>
@@ -127,9 +112,7 @@ function App() {
       </div>
       <button type="button" onClick={loadMore}>load more</button>
     </div>
-
   )
-
 }
 
 export default App;
