@@ -1,8 +1,9 @@
 import './App.css';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { GET_JOB_IDS_URL, GET_JOB_URL, GET_MORE_DATA } from './utils/constants';
+import {  useEffect, useState } from 'react';
+import { GET_JOB_IDS_URL, GET_JOB_URL, GET_MORE_DATA, getCols} from './utils/constants';
 import Card from './component/Card';
+
 let jobs = [];
 
 function App() {
@@ -40,16 +41,11 @@ function App() {
   }
 
   const cards = jobCards.map((d, i) => {
-    const getMoreInfo = () => {
-      if (d.url) {
-        window.open(d.url)
-      } else {
-        window.open(`${GET_MORE_DATA}${d.id}`)
-      }
-    }
+
     const lowercaseDescription = d.title.toLowerCase();
     let name = "";
     let description = "";
+
     const isHiringString = lowercaseDescription.indexOf('is hiring');
     const hiringString = lowercaseDescription.indexOf('hiring');
 
@@ -64,41 +60,10 @@ function App() {
       name = lowercaseDescription.substr(0, subStrIndex)
       description = lowercaseDescription.substr(subStrIndex + 1)
     }
-
-    const getCols = (d, i) => {
-      if (((i + 1) % 3) === 1) {
-        return (
-          <Card
-            name={name}
-            description={description}
-            time={d.time}
-            onclick={getMoreInfo} />
-        )
-      } else if (((i + 1) % 3) === 2) {
-
-        return (
-          <Card
-            name={name}
-            description={description}
-            time={d.time}
-            onclick={getMoreInfo}
-          />
-        )
-      } else if (((i + 1) % 3) === 0) {
-
-        return (
-          <Card
-            name={name}
-            description={description}
-            time={d.time}
-            onclick={getMoreInfo}
-          />
-        );
-      }
-    }
+console.log('time >>>>>>>',d.time)
     return (
       <div className="cards">
-        {getCols(d, i)}
+        {getCols(name, description , d.url, d.time, i , Card ,d.id)}
       </div>)
   })
   return (
